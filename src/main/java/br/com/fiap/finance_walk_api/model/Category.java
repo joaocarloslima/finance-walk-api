@@ -2,7 +2,7 @@ package br.com.fiap.finance_walk_api.model;
 
 import java.util.Random;
 
-public class Category {
+public class Category{
 
     private Long id;
     private String name;
@@ -25,5 +25,16 @@ public class Category {
     public String getIcon() {
         return icon;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Category [id=" + id + ", name=" + name + ", icon=" + icon + "]";
+    }
+
+  
 
 }
