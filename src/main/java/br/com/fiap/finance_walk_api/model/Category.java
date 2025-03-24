@@ -2,17 +2,17 @@ package br.com.fiap.finance_walk_api.model;
 
 import java.util.Random;
 
-public class Category{
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
+public class Category{
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String icon;
-
-    public Category(Long id, String name, String icon) {
-        this.id = Math.abs(new Random().nextLong());
-        this.name = name;
-        this.icon = icon;
-    }
 
     public Long getId() {
         return id;
