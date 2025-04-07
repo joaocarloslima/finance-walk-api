@@ -20,13 +20,14 @@ import org.springframework.web.server.ResponseStatusException;
 import br.com.fiap.finance_walk_api.model.Category;
 import br.com.fiap.finance_walk_api.repository.CategoryRepository;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/categories")
 // @CrossOrigin(origins = "http://localhost:3000")
+@Slf4j
 public class CategoryController {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
     @Autowired // injeção de dependência
     private CategoryRepository repository;
 
