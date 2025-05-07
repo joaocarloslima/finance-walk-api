@@ -3,9 +3,9 @@ package br.com.fiap.finance_walk_api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticatedPrincipal;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.fiap.finance_walk_api.model.Category;
+import br.com.fiap.finance_walk_api.model.User;
 import br.com.fiap.finance_walk_api.repository.CategoryRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,40 +38,53 @@ public class CategoryController {
     @GetMapping
     //@Cacheable
     @Operation(summary = "Listar todas categorias", description = "Lista todas as categorias salvas para um determinado usuário", tags = "Category")
-    public List<Category> index() {
-        return repository.findAll();
+    public List<Category> index(@AuthenticationPrincipal User user) {
+        return repository.findByUser(user);
     }
 
     @PostMapping
     //@CacheEvict(allEntries = true)
     @Operation(responses = @ApiResponse(responseCode = "400"))
     @ResponseStatus(HttpStatus.CREATED)
-    public Category create(@RequestBody @Valid Category category) {
+    public Category create(@RequestBody @Valid Category category, @AuthenticationPrincipal User user) {
         log.info("Cadastrando categoria " + category.getName());
+        category.setUser(user);
         return repository.save(category);
     }
 
     @GetMapping("{id}")
-    public Category get(@PathVariable Long id) {
+    public Category get(@PathVariable Long id, @AuthenticationPrincipal User user) {
         log.info("Buscando categoria " + id);
-        return getCategory(id);
+        var category = getCategory(id);
+        if(!category.getUser().equals(user)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Categoria não pertence ao usuário");
+        }
+        return category;
     }
 
     @DeleteMapping("{id}")
     //@CacheEvict(allEntries = true)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void destroy(@PathVariable Long id) {
+    public void destroy(@PathVariable Long id, @AuthenticationPrincipal User user) {
         log.info("Apagando categoria " + id);
-        repository.delete(getCategory(id));
+        var category = getCategory(id);
+        if(!category.getUser().equals(user)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Categoria não pertence ao usuário");
+        }
+        repository.delete(category);
     }
 
     @PutMapping("{id}")
     //@CacheEvict(allEntries = true)
-    public Category update(@PathVariable Long id, @RequestBody Category category) {
+    public Category update(@PathVariable Long id, @RequestBody Category category, @AuthenticationPrincipal User user) {
         log.info("Atualizando categoria " + id + " " + category);
 
-        getCategory(id);
+        var categoryOld = getCategory(id);
+        if(!categoryOld.getUser().equals(user)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Categoria não pertence ao usuário");
+        }
         category.setId(id);
+        category.setUser(user);
         return repository.save(category);
     }
 

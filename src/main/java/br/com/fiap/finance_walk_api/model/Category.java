@@ -1,9 +1,12 @@
 package br.com.fiap.finance_walk_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -29,5 +32,9 @@ public class Category {
     @NotBlank(message = "campo obrigatório")
     @Pattern(regexp = "^[A-Z].*", message = "deve começar com maiúscula")
     private String icon;
+
+    @JsonIgnore
+    @ManyToOne
+    private User user;
 
 }
