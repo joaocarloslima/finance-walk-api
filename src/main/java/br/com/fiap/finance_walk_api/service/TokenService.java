@@ -7,7 +7,6 @@ import java.time.ZoneOffset;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import br.com.fiap.finance_walk_api.model.Token;
@@ -17,7 +16,7 @@ import br.com.fiap.finance_walk_api.model.UserRole;
 @Service
 public class TokenService {
 
-    private Instant experiesAt = LocalDateTime.now().plusMinutes(10).toInstant(ZoneOffset.ofHours(-3));
+    private Instant experiesAt = LocalDateTime.now().plusMinutes(120).toInstant(ZoneOffset.ofHours(-3));
     private Algorithm algorithm = Algorithm.HMAC256("secret-muito-secreto-que-ninguem-pode-saber");
 
     public Token createToken(User user){
