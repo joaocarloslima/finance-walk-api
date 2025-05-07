@@ -41,7 +41,6 @@ public class User implements UserDetails {
     @NotBlank
     private String password;
 
-    @NotNull
     private UserRole role;
 
     @Override
