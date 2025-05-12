@@ -89,6 +89,7 @@ public class DatabaseSeeder {
                             .date(LocalDate.now().minusDays(new Random().nextInt(30)))
                             .type(TransactionType.EXPENSE)
                             .category(categories.get(new Random().nextInt(categories.size())))
+                            .user(new Random().nextBoolean() ? joao : maria)
                             .build());
         }
 

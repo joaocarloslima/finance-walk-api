@@ -3,6 +3,8 @@ package br.com.fiap.finance_walk_api.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -45,5 +47,9 @@ public class Transaction {
     @NotNull
     @Enumerated(EnumType.STRING)
     private TransactionType type;
+
+    @ManyToOne
+    @JsonIgnore
+    private User user;
 
 }
