@@ -1,6 +1,7 @@
 package br.com.fiap.finance_walk_api.repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import br.com.fiap.finance_walk_api.model.Transaction;
+import br.com.fiap.finance_walk_api.model.TransactionType;
 import br.com.fiap.finance_walk_api.model.User;
 import br.com.fiap.finance_walk_api.repository.CategoryExpenseData;
 
@@ -58,6 +60,10 @@ Optional<Transaction> findTopExpenseByUserCurrentMonth(@Param("user") User user)
     ORDER BY SUM(t.amount) DESC
 """)
 List<CategoryExpenseData> findCurrentMonthExpensesByCategory(@Param("user") User user);
+
+List<Transaction> findByTypeAndDateBetween(TransactionType type, LocalDate startDate, LocalDate endDate);
+
+List<Transaction> findByDateBetween(LocalDate startDate, LocalDate endDate);
 
 
 }
