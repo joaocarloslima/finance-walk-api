@@ -97,6 +97,12 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.19.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc11</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
